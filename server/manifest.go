@@ -12,9 +12,12 @@ var manifest *model.Manifest
 
 const manifestStr = `
 {
-  "id": "com.mattermost.plugin-starter-template",
-  "name": "Plugin Starter Template",
-  "description": "This plugin serves as a starting point for writing a Mattermost plugin.",
+  "id": "sh.ucw.mattermost-diceroll-plugin",
+  "name": "DiceRoll Plugin",
+  "description": "Allows users to roll dice using the /roll command.",
+  "homepage_url": "https://github.com/mattermost/mattermost-plugin-starter-template",
+  "support_url": "https://github.com/mattermost/mattermost-plugin-starter-template/issues",
+  "icon_path": "assets/starter-template-icon.svg",
   "version": "0.1.0",
   "min_server_version": "5.12.0",
   "server": {
@@ -24,9 +27,6 @@ const manifestStr = `
       "windows-amd64": "server/dist/plugin-windows-amd64.exe"
     },
     "executable": ""
-  },
-  "webapp": {
-    "bundle_path": "webapp/dist/main.js"
   },
   "settings_schema": {
     "header": "",
