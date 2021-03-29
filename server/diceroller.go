@@ -30,7 +30,7 @@ func NewDiceRoller() *DiceRoller {
 
 	r.formulaPattern = regexp.MustCompile(`^` +
 		`(?P<num_dice>[0-9]+)?d(?P<type>%|F|AE|[0-9]+)` +
-		`((?P<explode>e)(?P<explode_value>[hl]))?` +
+		`(e(?P<explode_op>>=|<=)(?P<explode_tn>-?[0-9]+))?` +
 		`((?P<filters>(?:(?:kh|kl|dh|dl)[1-9][0-9]*)+))?` +
 		`((?P<total_unmodified>=)|(?P<total_modifier_op>[+\-*/])(?P<total_modifier_val>[0-9]+))?` +
 		`(s(?P<success_op>>=|<=)(?P<success_tn>[0-9]+))?` +
@@ -104,6 +104,22 @@ func FormatDiceResult(system DiceSystem, roll int) string {
 	return fmt.Sprint(roll)
 }
 
+func LowestDieOutcome(system DiceSystem, numSides int) int {
+	if system == dsFudge {
+		return -1
+	}
+
+	return 1
+}
+
+func HighestDieOutcome(system DiceSystem, numSides int) int {
+	if system == dsFudge {
+		return 1
+	}
+
+	return numSides
+}
+
 func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 	warnings := ""
 
@@ -152,21 +168,36 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 			rolls = append(rolls, roll)
 		}
 
-		// Optionally explode highest/lowest dice
-		if system == dsStandard && len(matches["explode"]) != 0 {
-			explodeValue := func() int {
-				if matches["explode_value"] == "h" {
-					return numSides
-				} else if matches["explode_value"] == "l" {
-					return 1
-				} else {
-					return -1
+		// Optionally explode dice
+		explodeDice := len(matches["explode_op"]) > 0
+		if explodeDice {
+			op := matches["explode_op"]
+			targetNumber, _ := strconv.Atoi(matches["explode_tn"])
+
+			lowest := LowestDieOutcome(system, numSides)
+			highest := HighestDieOutcome(system, numSides)
+			if op == ">=" && targetNumber <= lowest {
+				warnings += fmt.Sprintf("⚠️ %v is too low an explosion target number, rolling with e>=%v instead.\n", targetNumber, lowest+1)
+				targetNumber = lowest + 1
+			} else if op == "<=" && targetNumber >= highest {
+				warnings += fmt.Sprintf("⚠️ %v is too high an explosion target number, rolling with e<=%v instead.\n", targetNumber, highest-1)
+				targetNumber = highest - 1
+			}
+
+			shouldExplode := func(roll int) bool {
+				switch op {
+				case ">=":
+					return roll >= targetNumber
+				case "<=":
+					return roll <= targetNumber
 				}
-			}()
+
+				return false
+			}
 
 			numExplosions := 0
-			for idx := 0; idx < len(rolls); idx++ {
-				if rolls[idx] == explodeValue {
+			for idx := range rolls {
+				if shouldExplode(rolls[idx]) {
 					numExplosions += 1
 				}
 			}
@@ -174,7 +205,7 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 			for ; numExplosions > 0; numExplosions -= 1 {
 				roll := r.RollSingle(numSides)
 				rolls = append(rolls, roll)
-				if roll == explodeValue {
+				if shouldExplode(roll) {
 					numExplosions += 1
 				}
 			}

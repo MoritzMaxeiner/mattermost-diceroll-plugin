@@ -67,8 +67,8 @@ func (p *Plugin) ExecuteRoll(c *plugin.Context, args *model.CommandArgs) (*model
 				"  - `F`: Roll [Fudge](https://en.wikipedia.org/wiki/Fudge_%28role-playing_game_system%29) dice (equiprobable die outcomes {`plus`, `minus`, `blank`}) and aggregate the total\n" +
 				"  - `AE`: Roll Aetherium dice (d12 with outcomes {`switch` on (1-5), `chip` on (6-9), `short` on (10-11), `crash` on (12)} × {`disruption` on (5,9,11,12), `blank` otherwise}) and aggregate the symbols\n" +
 				"- `EXPLODE` enables *optional* die explosion:\n" +
-				"  - `el`: Roll 1 additional die for each die showing the lowest possible outcome\n" +
-				"  - `eh`: Roll 1 additional die for each die showing the highest possible outcome\n" +
+				"  - `e>=K`: Roll 1 additional die for each die outcome greater than or equal to `K`\n" +
+				"  - `e<=K`: Roll 1 additional die for each die outcome less than or equal to `K`\n" +
 				"- Each *optional* `FILTER` (sub)selects the dice used for aggregation:\n" +
 				"  - `dlK`: Drops the `K` lowest dice\n" +
 				"  - `klK`: Keeps only the `K` lowest dice\n" +

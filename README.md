@@ -17,8 +17,8 @@ A single `FORMULA` has the canonical form `[N]dT[EXPLODE][FILTER...][TOTAL][SUCC
     -   `F`: Roll [Fudge](https://en.wikipedia.org/wiki/Fudge_%28role-playing_game_system%29) dice (equiprobable die outcomes {`plus`, `minus`, `blank`}) and aggregate the total
     -   `AE`: Roll Aetherium dice (d12 with outcomes {`switch` on (1-5), `chip` on (6-9), `short` on (10-11), `crash` on (12)} × {`disruption` on (5,9,11,12), `blank` otherwise}) and aggregate the symbols
 -   `EXPLODE` enables _optional_ die explosion:
-    -   `el`: Roll 1 additional die for each die showing the lowest possible outcome
-    -   `eh`: Roll 1 additional die for each die showing the highest possible outcome
+    -   `e>=K`: Roll 1 additional die for each die outcome greater than or equal to `K`
+    -   `e<=K`: Roll 1 additional die for each die outcome less than or equal to `K`
 -   Each _optional_ `FILTER` (sub)selects the dice used for aggregation:
     -   `dlK`: Drops the `K` lowest dice
     -   `klK`: Keeps only the `K` lowest dice
