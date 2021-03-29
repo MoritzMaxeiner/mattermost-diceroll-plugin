@@ -98,7 +98,11 @@ func (p *Plugin) ExecuteRoll(c *plugin.Context, args *model.CommandArgs) (*model
 		responseText += fmt.Sprintf("⚠️ Limited to 10 rolls at once.\n")
 	}
 
-	responseText += fmt.Sprintf("*throws the dice…* ")
+	user, err := p.API.GetUser(args.UserId)
+	if err != nil {
+		return nil, err
+	}
+	responseText += fmt.Sprintf("*%v throws the dice…* ", user.GetDisplayName(model.SHOW_NICKNAME_FULLNAME))
 
 	attachments := []*model.SlackAttachment{}
 	for idx := 0; idx < len(commandArgs); idx++ {
