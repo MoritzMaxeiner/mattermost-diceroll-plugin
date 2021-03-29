@@ -18,7 +18,7 @@ const manifestStr = `
   "homepage_url": "https://github.com/MoritzMaxeiner/mattermost-diceroll-plugin",
   "support_url": "https://github.com/MoritzMaxeiner/mattermost-diceroll-plugin/issues",
   "icon_path": "assets/starter-template-icon.svg",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "min_server_version": "5.12.0",
   "server": {
     "executables": {
