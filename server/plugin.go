@@ -59,7 +59,7 @@ func (p *Plugin) ExecuteRoll(c *plugin.Context, args *model.CommandArgs) (*model
 			ResponseType: model.COMMAND_RESPONSE_TYPE_EPHEMERAL,
 			Text: "Usage: `/roll FORMULA...`\n" +
 				"Roll at most 10 [dice algebra](https://en.wikipedia.org/wiki/Dice_notation) `FORMULA`(s).\n\n" +
-				"A single `FORMULA` has the canonical form `[N]dT[EXPLODE][FILTER...][TOTAL][SUCCESS]`, where\n" +
+				"A single `FORMULA` has the canonical form `[N]dT[EXPLODE][FILTER...][TOTAL][SUCCESS]` and is evaluated from left to right, where\n" +
 				"- `N` is the *optional* number of dice to roll (default: 1)\n" +
 				"- `T` is the type of dice to roll:\n" +
 				"  - A number: Roll `T`-sided dice (`T >= 2`)\n" +
@@ -69,7 +69,7 @@ func (p *Plugin) ExecuteRoll(c *plugin.Context, args *model.CommandArgs) (*model
 				"- `EXPLODE` enables *optional* die explosion:\n" +
 				"  - `el`: Roll 1 additional die for each die showing the lowest possible outcome\n" +
 				"  - `eh`: Roll 1 additional die for each die showing the highest possible outcome\n" +
-				"- Each *optional* `FILTER` (sub)selects the dice used to calculate the total (left-to-right evaluation order):\n" +
+				"- Each *optional* `FILTER` (sub)selects the dice used for aggregation:\n" +
 				"  - `dlK`: Drops the `K` lowest dice\n" +
 				"  - `klK`: Keeps only the `K` lowest dice\n" +
 				"  - `dhK`: Drops the `K` highest dice\n" +

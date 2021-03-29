@@ -8,7 +8,7 @@ This plugin enables users to roll dice using the /roll command.
 
 Roll at most 10 [dice algebra](https://en.wikipedia.org/wiki/Dice_notation) `FORMULA`(s).
 
-A single `FORMULA` has the canonical form `[N]dT[EXPLODE][FILTER...][TOTAL][SUCCESS]`, where
+A single `FORMULA` has the canonical form `[N]dT[EXPLODE][FILTER...][TOTAL][SUCCESS]` and is evaluated from left to right, where
 
 -   `N` is the _optional_ number of dice to roll (default: 1)
 -   `T` is the type of dice to roll:
@@ -19,7 +19,7 @@ A single `FORMULA` has the canonical form `[N]dT[EXPLODE][FILTER...][TOTAL][SUCC
 -   `EXPLODE` enables _optional_ die explosion:
     -   `el`: Roll 1 additional die for each die showing the lowest possible outcome
     -   `eh`: Roll 1 additional die for each die showing the highest possible outcome
--   Each _optional_ `FILTER` (sub)selects the dice used to calculate the total (left-to-right evaluation order):
+-   Each _optional_ `FILTER` (sub)selects the dice used for aggregation:
     -   `dlK`: Drops the `K` lowest dice
     -   `klK`: Keeps only the `K` lowest dice
     -   `dhK`: Drops the `K` highest dice
