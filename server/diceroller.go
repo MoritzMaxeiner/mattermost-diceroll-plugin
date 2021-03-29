@@ -28,7 +28,7 @@ func NewDiceRoller() *DiceRoller {
 
 	r.distributions = make(map[int]*distuv.Categorical)
 
-	r.formulaPattern = regexp.MustCompile(`^(?P<num_dice>[0-9]+)?d(?P<type>%|F|AE|[0-9]+)((?P<explode>e)(?P<explode_value>[hl]))?((?P<filters>(?:(?:kh|kl|dh|dl)[1-9][0-9]*)+))?((?P<total_unmodified>=)|(?P<total_modifier_op>[+\-*/])(?P<total_modifier_val>[0-9]+))?((?P<success_op>>=|<=)(?P<success_tn>[0-9]+))?$`)
+	r.formulaPattern = regexp.MustCompile(`^(?P<num_dice>[0-9]+)?d(?P<type>%|F|AE|[0-9]+)((?P<explode>e)(?P<explode_value>[hl]))?((?P<filters>(?:(?:kh|kl|dh|dl)[1-9][0-9]*)+))?((?P<total_unmodified>=)|(?P<total_modifier_op>[+\-*/])(?P<total_modifier_val>[0-9]+))?(s(?P<success_op>>=|<=)(?P<success_tn>[0-9]+))?$`)
 
 	r.filterPattern = regexp.MustCompile(`(k[hl]|d[hl])([1-9][0-9]*)`)
 

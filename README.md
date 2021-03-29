@@ -31,8 +31,8 @@ A single `FORMULA` has the canonical form `[N]dT[EXPLODE][FILTER...][TOTAL][SUCC
     -   `*K`: Calculates the total and multiplies it by `K`
     -   `/K`: Calculates the total and divides it by `K`
 -   `SUCCESS` _optionally_ determines the number of dice meeting a target number (successes)
-    -   `>=K`: Die outcomes greater than or equal to `K` are successes
-    -   `<=K`: Die outcomes less than or equal to `K` are successes
+    -   `s>=K`: Die outcomes greater than or equal to `K` are successes
+    -   `s<=K`: Die outcomes less than or equal to `K` are successes
 
 ## Getting Started
 
