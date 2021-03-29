@@ -75,11 +75,11 @@ func (p *Plugin) ExecuteRoll(c *plugin.Context, args *model.CommandArgs) (*model
 				"  - `dhK`: Drops the `K` highest dice\n" +
 				"  - `khK`: Keeps only the `K` highest dice\n" +
 				"- `TOTAL` *optionally* sums up the dice outcomes and *optionally* applies a modifier on the result:\n" +
-				"  - `=`: Calculates the total without a modifier\n" +
-				"  - `+K`: Calculates the total and adds `K`\n" +
-				"  - `-K`: Calculates the total and subtracts `K`\n" +
-				"  - `*K`: Calculates the total and multiplies it by `K`\n" +
-				"  - `/K`: Calculates the total and divides it by `K`\n" +
+				"  - `t`: Totals without a modifier\n" +
+				"  - `+K` or `t+K`: Totals and adds `K`\n" +
+				"  - `-K` or `t-K`: Totals and subtracts `K`\n" +
+				"  - `*K` or `t*K`: Totals and multiplies by `K`\n" +
+				"  - `/K` or `t/K`: Totals and divides by `K`\n" +
 				"- `SUCCESS` *optionally* determines the number of dice meeting a target number (successes)\n" +
 				"  - `s>=K`: Die outcomes greater than or equal to `K` are successes\n" +
 				"  - `s<=K`: Die outcomes less than or equal to `K` are successes\n",

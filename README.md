@@ -25,11 +25,11 @@ A single `FORMULA` has the canonical form `[N]dT[EXPLODE][FILTER...][TOTAL][SUCC
     -   `dhK`: Drops the `K` highest dice
     -   `khK`: Keeps only the `K` highest dice
 -   `TOTAL` _optionally_ sums up the dice outcomes and _optionally_ applies a modifier on the result:
-    -   `=`: Calculates the total without a modifier
-    -   `+K`: Calculates the total and adds `K`
-    -   `-K`: Calculates the total and subtracts `K`
-    -   `*K`: Calculates the total and multiplies it by `K`
-    -   `/K`: Calculates the total and divides it by `K`
+    -   `t`: Calculates the total without a modifier
+    -   `+K` or `t+K`: Totals and adds `K`
+    -   `-K` or `t-K`: Totals and subtracts `K`
+    -   `*K` or `t*K`: Totals and multiplies by `K`
+    -   `/K` or `t/K`: Totals and divides by `K`
 -   `SUCCESS` _optionally_ determines the number of dice meeting a target number (successes)
     -   `s>=K`: Die outcomes greater than or equal to `K` are successes
     -   `s<=K`: Die outcomes less than or equal to `K` are successes
