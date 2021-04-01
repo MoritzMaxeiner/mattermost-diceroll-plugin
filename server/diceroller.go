@@ -179,6 +179,7 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 
 		// Optionally explode dice
 		explodeDice := len(matches["explode_op"]) > 0
+		numExplosions := 0
 		if explodeDice {
 			op := matches["explode_op"]
 			targetNumber, _ := strconv.Atoi(matches["explode_tn"])
@@ -204,14 +205,13 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 				return false
 			}
 
-			numExplosions := 0
 			for idx := range rolls {
 				if shouldExplode(rolls[idx]) {
 					numExplosions += 1
 				}
 			}
 
-			for ; numExplosions > 0; numExplosions -= 1 {
+			for idx := 0; idx < numExplosions; idx += 1 {
 				roll := r.RollSingle(numSides)
 				rolls = append(rolls, roll)
 				if shouldExplode(roll) {
@@ -277,6 +277,13 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 			Title: notation,
 			Value: rollField,
 		})
+
+		if explodeDice {
+			fields = append(fields, &model.SlackAttachmentField{
+				Title: "Explosions",
+				Value: fmt.Sprintf("%v", numExplosions),
+			})
+		}
 
 		// Optionally aggregate the total
 		aggregateTotal := len(matches["total_explicit"]) > 0 || len(matches["total_modifier_op"]) > 0 || system == dsFudge
