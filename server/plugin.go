@@ -2,11 +2,15 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 
 	"github.com/mattermost/mattermost-server/v5/model"
 	"github.com/mattermost/mattermost-server/v5/plugin"
+	"github.com/pkg/errors"
 )
 
 // Plugin implements the interface expected by the Mattermost server to communicate between the server and plugin processes.
@@ -21,6 +25,8 @@ type Plugin struct {
 	configuration *configuration
 
 	diceRoller *DiceRoller
+
+	assetHandler http.Handler
 }
 
 func NewPlugin() *Plugin {
@@ -39,7 +45,46 @@ func (p *Plugin) OnActivate() (err error) {
 		AutoComplete:     true,
 		AutoCompleteDesc: "🎲 Roll some dice. See `/roll help` for usage.",
 	})
-	return
+	if err != nil {
+		return errors.Wrap(err, "Failed to register /roll command")
+	}
+
+	bundlePath, err := p.API.GetBundlePath()
+	if err != nil {
+		return errors.Wrap(err, "Failed to get bundle path")
+	}
+
+	p.assetHandler = http.FileServer(http.Dir(filepath.Join(bundlePath, "assets")))
+
+	type NameOutcomes struct {
+		name     string
+		outcomes []int
+	}
+
+	createImageLinks := func(system DiceSystem, src map[string]NameOutcomes) {
+		for url, nameOutcomes := range src {
+			if _, err := os.Stat(filepath.Join(bundlePath, "assets", url)); os.IsNotExist(err) {
+				p.API.LogWarn(fmt.Sprintf("Missing asset %v", url))
+				continue
+			}
+			link := fmt.Sprintf("![%v](/plugins/%v/%v \"%v\")", nameOutcomes.name, manifest.Id, url, nameOutcomes.name)
+			for idx := range nameOutcomes.outcomes {
+				p.diceRoller.imageLinks[system][nameOutcomes.outcomes[idx]] = link
+			}
+		}
+	}
+
+	createImageLinks(dsAetherium, map[string]NameOutcomes{
+		"dice/aetherium/switch.svg":            {"Switch", []int{0, 1, 2, 3, 4}},
+		"dice/aetherium/switch_disruption.svg": {"Switch, Disruption", []int{5}},
+		"dice/aetherium/chip.svg":              {"Chip", []int{6, 7, 8}},
+		"dice/aetherium/chip_disruption.svg":   {"Chip, Disruption", []int{9}},
+		"dice/aetherium/short.svg":             {"Short", []int{10}},
+		"dice/aetherium/short_disruption.svg":  {"Short, Disruption", []int{11}},
+		"dice/aetherium/crash_disruption.svg":  {"Crash, Disruption", []int{12}},
+	})
+
+	return nil
 }
 
 func (p *Plugin) ExecuteCommand(c *plugin.Context, args *model.CommandArgs) (*model.CommandResponse, *model.AppError) {
@@ -118,4 +163,8 @@ func (p *Plugin) ExecuteRoll(c *plugin.Context, args *model.CommandArgs) (*model
 		},
 		Username: "DiceRoller",
 	}, nil
+}
+
+func (p *Plugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Request) {
+	p.assetHandler.ServeHTTP(w, r)
 }

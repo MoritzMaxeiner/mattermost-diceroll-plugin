@@ -19,6 +19,8 @@ type DiceRoller struct {
 	formulaPattern *regexp.Regexp
 
 	filterPattern *regexp.Regexp
+
+	imageLinks map[DiceSystem]map[int]string
 }
 
 func NewDiceRoller() *DiceRoller {
@@ -37,6 +39,9 @@ func NewDiceRoller() *DiceRoller {
 		`$`)
 
 	r.filterPattern = regexp.MustCompile(`(k[hl]|d[hl])([1-9][0-9]*)`)
+
+	r.imageLinks = make(map[DiceSystem]map[int]string)
+	r.imageLinks[dsAetherium] = make(map[int]string)
 
 	return r
 }
@@ -88,7 +93,7 @@ func ParseDiceType(type_ string) (DiceSystem, int) {
 	}
 }
 
-func FormatDiceResult(system DiceSystem, roll int) string {
+func (r *DiceRoller) FormatDiceResult(system DiceSystem, roll int) string {
 	if system == dsFudge {
 		switch roll {
 		case -1:
@@ -97,6 +102,10 @@ func FormatDiceResult(system DiceSystem, roll int) string {
 			return "&nbsp;&nbsp;"
 		case 1:
 			return "+"
+		}
+	} else if system == dsAetherium {
+		if link, ok := r.imageLinks[dsAetherium][roll]; ok {
+			return link
 		}
 	}
 
@@ -252,7 +261,7 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 			if system == dsFudge && filtering {
 				formatSystem = dsStandard
 			}
-			str := FormatDiceResult(formatSystem, rolls[idx])
+			str := r.FormatDiceResult(formatSystem, rolls[idx])
 			if filtering {
 				if useRoll[idx] {
 					rollField += str
