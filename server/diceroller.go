@@ -301,6 +301,7 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 				modifiedTotal := float64(total)
 				modifier, _ := strconv.Atoi(matches["total_modifier_val"])
 
+				formatString := "%v"
 				switch matches["total_modifier_op"] {
 				case "+":
 					modifiedTotal += float64(modifier)
@@ -310,11 +311,12 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 					modifiedTotal *= float64(modifier)
 				case "/":
 					modifiedTotal /= float64(modifier)
+					formatString = "%.2f"
 				}
 
 				fields = append(fields, &model.SlackAttachmentField{
 					Title: "Total",
-					Value: fmt.Sprintf("%v", modifiedTotal),
+					Value: fmt.Sprintf(formatString, modifiedTotal),
 				})
 			} else {
 				fields = append(fields, &model.SlackAttachmentField{
