@@ -18,7 +18,7 @@ const manifestStr = `
   "homepage_url": "https://github.com/MoritzMaxeiner/mattermost-diceroll-plugin",
   "support_url": "https://github.com/MoritzMaxeiner/mattermost-diceroll-plugin/issues",
   "icon_path": "assets/dice-d20-solid.svg",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "min_server_version": "5.12.0",
   "server": {
     "executables": {
