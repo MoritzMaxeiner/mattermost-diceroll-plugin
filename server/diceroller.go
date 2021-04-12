@@ -35,7 +35,7 @@ func NewDiceRoller() *DiceRoller {
 		`(e(?P<explode_op>>=|<=)(?P<explode_tn>-?[0-9]+))?` +
 		`((?P<filters>(?:(?:kh|kl|dh|dl)[1-9][0-9]*)+))?` +
 		`((?P<total_modifier_op>[+\-*/])(?P<total_modifier_val>[0-9]+))?` +
-		`(s(?P<success_op>>=|<=)(?P<success_tn>-?[0-9]+))?` +
+		`((?P<success_op>>=|<=)(?P<success_tn>-?[0-9]+))?` +
 		`$`)
 
 	r.filterPattern = regexp.MustCompile(`(k[hl]|d[hl])([1-9][0-9]*)`)

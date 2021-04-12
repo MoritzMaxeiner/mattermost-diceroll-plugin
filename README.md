@@ -30,8 +30,8 @@ A single `FORMULA` has the canonical form `[N]dT[EXPLODE][FILTER...][TOTAL][SUCC
     -   `*K`: Multiplies the total by `K`
     -   `/K`: Divides the total by `K`
 -   `SUCCESS` _optionally_ determines the number of dice meeting a target number (successes)
-    -   `s>=K`: Die outcomes greater than or equal to `K` are successes
-    -   `s<=K`: Die outcomes less than or equal to `K` are successes
+    -   `>=K`: Die outcomes greater than or equal to `K` are successes
+    -   `<=K`: Die outcomes less than or equal to `K` are successes
 
 ## Getting Started
 

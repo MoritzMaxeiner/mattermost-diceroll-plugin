@@ -125,8 +125,8 @@ func (p *Plugin) ExecuteRoll(c *plugin.Context, args *model.CommandArgs) (*model
 				"  - `*K`: Multiplies the total by `K`\n" +
 				"  - `/K`: Divides the total by `K`\n" +
 				"- `SUCCESS` *optionally* determines the number of dice meeting a target number (successes)\n" +
-				"  - `s>=K`: Die outcomes greater than or equal to `K` are successes\n" +
-				"  - `s<=K`: Die outcomes less than or equal to `K` are successes\n",
+				"  - `>=K`: Die outcomes greater than or equal to `K` are successes\n" +
+				"  - `<=K`: Die outcomes less than or equal to `K` are successes\n",
 			Props: map[string]interface{}{
 				"from_webhook": "true",
 			},
