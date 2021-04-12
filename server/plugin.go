@@ -104,6 +104,17 @@ func (p *Plugin) ExecuteRoll(c *plugin.Context, args *model.CommandArgs) (*model
 			ResponseType: model.COMMAND_RESPONSE_TYPE_EPHEMERAL,
 			Text: "Usage: `/roll FORMULA...`\n" +
 				"Roll at most 10 [dice algebra](https://en.wikipedia.org/wiki/Dice_notation) `FORMULA`(s).\n\n" +
+				"Examples:\n" +
+				"- `/roll 3d6`: Roll three 6-sided dice and sum up the total.\n" +
+				"- `/roll 3d6+4`: Roll three 6-sided dice, sum up the total, and add 4 to the total.\n" +
+				"- `/roll 3d20`: Roll three 20-sided dice and sum up the total.\n" +
+				"- `/roll 3d20<=4`: Roll three 20-sided dice, sum up the total, and count each die showing less than or equal to `4` as a success.\n" +
+				"- `/roll 3d20e<=1`: Roll three 20-sided dice, roll one additional die for each die showing less than or equal to `1` and sum up the total.\n" +
+				"- `/roll 3d20e<=1<=4`: Roll three 20-sided dice, roll one additional die for each die showing less than or equal to `1`, sum up the total, and count each die showing less than or equal to `4` as a success.\n" +
+				"- `/roll 6d10dl2`: Roll six 10-sided dice, drop the lowest two dice, and sum up the total (of the remaining four dice).\n" +
+				"- `/roll 6d10kl2`: Roll six 10-sided dice, keep the lowest two dice, and sum up the total (of these two dice).\n" +
+				"- `/roll 3dAE`: Roll three Aetherium dice and aggregate the symbols.\n" +
+				"\n" +
 				"A single `FORMULA` has the canonical form `[N]dT[EXPLODE][FILTER...][TOTAL][SUCCESS]` and is evaluated from left to right, where\n" +
 				"- `N` is the *optional* number of dice to roll (default: 1)\n" +
 				"- `T` is the type of dice to roll:\n" +
