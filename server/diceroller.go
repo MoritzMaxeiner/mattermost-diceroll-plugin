@@ -97,11 +97,11 @@ func (r *DiceRoller) FormatDiceResult(system DiceSystem, roll int) string {
 	if system == dsFudge {
 		switch roll {
 		case -1:
-			return "-"
+			return "**-**"
 		case 0:
 			return "&nbsp;&nbsp;"
 		case 1:
-			return "+"
+			return "**+**"
 		}
 	} else if system == dsAetherium {
 		if link, ok := r.imageLinks[dsAetherium][roll]; ok {
@@ -110,7 +110,7 @@ func (r *DiceRoller) FormatDiceResult(system DiceSystem, roll int) string {
 	}
 
 	// NOTE: system == dsStandard or any other non-special
-	return fmt.Sprint(roll)
+	return fmt.Sprintf("**%v**", roll)
 }
 
 func LowestDieOutcome(system DiceSystem, numSides int) int {
@@ -254,25 +254,39 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 		}
 
 		// Format rolled dice
-		rollField := ""
-		for idx := 0; idx < len(rolls); idx++ {
-			rollField += "|"
-			formatSystem := system
-			if system == dsFudge && filtering {
-				formatSystem = dsStandard
-			}
-			str := r.FormatDiceResult(formatSystem, rolls[idx])
+		formatSystem := system
+		if system == dsFudge && filtering {
+			formatSystem = dsStandard
+		}
+		formatDie := func(roll int) string {
+			str := r.FormatDiceResult(formatSystem, roll)
 			if filtering {
-				if useRoll[idx] {
-					rollField += str
+				if useRoll[roll] {
+					return str
 				} else {
-					rollField += fmt.Sprintf("~~%v~~", str)
+					return fmt.Sprintf("~~%v~~", str)
 				}
 			} else {
-				rollField += str
+				return str
 			}
 		}
-		rollField += "|\n|-|\n||"
+
+		rollField := ""
+		multiLine := false
+		for idx := 0; idx < len(rolls); idx++ {
+			if idx > 0 && (idx%10) == 0 {
+				rollField += "|\n"
+				if !multiLine {
+					multiLine = true
+					rollField += "|-|\n"
+				}
+			}
+			rollField += "|" + formatDie(rolls[idx])
+		}
+		rollField += "|\n"
+		if !multiLine {
+			rollField += "|-|\n||"
+		}
 		fields = append(fields, &model.SlackAttachmentField{
 			Title: notation,
 			Value: rollField,
