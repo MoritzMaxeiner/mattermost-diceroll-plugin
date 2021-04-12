@@ -107,8 +107,8 @@ func (p *Plugin) ExecuteRoll(c *plugin.Context, args *model.CommandArgs) (*model
 				"A single `FORMULA` has the canonical form `[N]dT[EXPLODE][FILTER...][TOTAL][SUCCESS]` and is evaluated from left to right, where\n" +
 				"- `N` is the *optional* number of dice to roll (default: 1)\n" +
 				"- `T` is the type of dice to roll:\n" +
-				"  - A number: Roll `T`-sided dice (`T >= 2`)\n" +
-				"  - `%`: Roll d100 (*percentile*) dice\n" +
+				"  - A number: Roll `T`-sided dice (`T >= 2`) and aggregate the total\n" +
+				"  - `%`: Roll d100 (*percentile*) dice and aggregate the total\n" +
 				"  - `F`: Roll [Fudge](https://en.wikipedia.org/wiki/Fudge_%28role-playing_game_system%29) dice (equiprobable die outcomes {`plus`, `minus`, `blank`}) and aggregate the total\n" +
 				"  - `AE`: Roll Aetherium dice (d12 with outcomes {`switch` on (1-5), `chip` on (6-9), `short` on (10-11), `crash` on (12)} × {`disruption` on (5,9,11,12), `blank` otherwise}) and aggregate the symbols\n" +
 				"- `EXPLODE` enables *optional* die explosion:\n" +
@@ -119,12 +119,11 @@ func (p *Plugin) ExecuteRoll(c *plugin.Context, args *model.CommandArgs) (*model
 				"  - `klK`: Keeps only the `K` lowest dice\n" +
 				"  - `dhK`: Drops the `K` highest dice\n" +
 				"  - `khK`: Keeps only the `K` highest dice\n" +
-				"- `TOTAL` *optionally* sums up the dice outcomes and *optionally* applies a modifier on the result:\n" +
-				"  - `t`: Totals without a modifier\n" +
-				"  - `+K` or `t+K`: Totals and adds `K`\n" +
-				"  - `-K` or `t-K`: Totals and subtracts `K`\n" +
-				"  - `*K` or `t*K`: Totals and multiplies by `K`\n" +
-				"  - `/K` or `t/K`: Totals and divides by `K`\n" +
+				"- `TOTAL` *optionally* applies a modifier on the total:\n" +
+				"  - `+K`: Adds `K` to the total\n" +
+				"  - `-K`: Subtracts `K` from the total\n" +
+				"  - `*K`: Multiplies the total by `K`\n" +
+				"  - `/K`: Divides the total by `K`\n" +
 				"- `SUCCESS` *optionally* determines the number of dice meeting a target number (successes)\n" +
 				"  - `s>=K`: Die outcomes greater than or equal to `K` are successes\n" +
 				"  - `s<=K`: Die outcomes less than or equal to `K` are successes\n",

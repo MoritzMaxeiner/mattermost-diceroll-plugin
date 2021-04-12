@@ -34,7 +34,7 @@ func NewDiceRoller() *DiceRoller {
 		`(?P<num_dice>[0-9]+)?d(?P<type>%|F|AE|[0-9]+)` +
 		`(e(?P<explode_op>>=|<=)(?P<explode_tn>-?[0-9]+))?` +
 		`((?P<filters>(?:(?:kh|kl|dh|dl)[1-9][0-9]*)+))?` +
-		`(?P<total_explicit>t)?((?P<total_modifier_op>[+\-*/])(?P<total_modifier_val>[0-9]+))?` +
+		`((?P<total_modifier_op>[+\-*/])(?P<total_modifier_val>[0-9]+))?` +
 		`(s(?P<success_op>>=|<=)(?P<success_tn>-?[0-9]+))?` +
 		`$`)
 
@@ -286,7 +286,7 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 		}
 
 		// Optionally aggregate the total
-		aggregateTotal := len(matches["total_explicit"]) > 0 || len(matches["total_modifier_op"]) > 0 || system == dsFudge
+		aggregateTotal := system == dsStandard || system == dsFudge
 		if aggregateTotal {
 			modifyTotal := len(matches["total_modifier_op"]) > 0
 
