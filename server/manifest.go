@@ -17,7 +17,7 @@ const manifestStr = `
   "description": "Allows users to roll dice using the /roll command.",
   "homepage_url": "https://github.com/MoritzMaxeiner/mattermost-diceroll-plugin",
   "support_url": "https://github.com/MoritzMaxeiner/mattermost-diceroll-plugin/issues",
-  "icon_path": "assets/starter-template-icon.svg",
+  "icon_path": "assets/dice-d20-solid.svg",
   "version": "0.2.3",
   "min_server_version": "5.12.0",
   "server": {
