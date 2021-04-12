@@ -258,10 +258,10 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 		if system == dsFudge && filtering {
 			formatSystem = dsStandard
 		}
-		formatDie := func(roll int) string {
-			str := r.FormatDiceResult(formatSystem, roll)
+		formatDie := func(idx int) string {
+			str := r.FormatDiceResult(formatSystem, rolls[idx])
 			if filtering {
-				if useRoll[roll] {
+				if useRoll[idx] {
 					return str
 				} else {
 					return fmt.Sprintf("~~%v~~", str)
@@ -281,7 +281,7 @@ func (r *DiceRoller) RollNotation(notation string) *model.SlackAttachment {
 					rollField += "|-|\n"
 				}
 			}
-			rollField += "|" + formatDie(rolls[idx])
+			rollField += "|" + formatDie(idx)
 		}
 		rollField += "|\n"
 		if !multiLine {
